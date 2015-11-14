@@ -1,0 +1,15 @@
+{
+  "name": "rpc-multiauth",
+  "version": "0.0.1",
+  "dependencies": {
+    "clone": "^1.0.2",
+    "cookie": "^0.2.3",
+    "cookie-cutter": "^0.1.1",
+    "detect-node": "^2.0.3",
+    "extend": "^3.0.0",
+    "jsonwebtoken": "^5.4.0",
+    "store": "^1.3.17",
+    "xhr": "^2.1.0"
+  },
+  "license": "AGPL-1.0"
+}
