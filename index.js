@@ -288,6 +288,7 @@ function authRPC(opts, procs, hookOrNamespace) {
     rpcMethods.authenticate = function(token, cb) {
         verifyToken(token, opts.secret, {expiration: opts.tokenExpiration}, function(err, decoded) {
             if(err) return cb(err);
+
             rememberUser(token);
             cb(null, decoded);
         });
@@ -329,7 +330,8 @@ function authRPC(opts, procs, hookOrNamespace) {
             return rpcFail(args, "Unauthorized: " + (msg || "Are you sure you are logged in?"));
         }
 
-        return function() {
+        var f = function() {
+
             var userData;
             if(rpcMethods && rpcMethods._rpcMultiAuthData) {
                 userData = rpcMethods._rpcMultiAuthData.userData;
@@ -366,6 +368,19 @@ function authRPC(opts, procs, hookOrNamespace) {
                 }
             }            
         };
+
+        // Propagate synchronous function tag.
+        // This tag ensures that the function is recognized
+        // as the appropriate read/write/duplex stream returning function
+        if(method._rpcOpts) {
+            Object.defineProperty(
+                f, 
+                '_rpcOpts', 
+                {enumerable: false, value: method._rpcOpts}
+            );
+        }
+
+        return f;
     }
 
     var key, innerKey, namespace, wrapped;
@@ -396,7 +411,6 @@ var rpcMultiAuth;
 if(isNode) { // server side
 
     module.exports = rpcMultiAuth = function() {
-
 
         // Being initialized for RPC auth
         if(typeof arguments[0] == 'object' && typeof arguments[1] == 'object') {

@@ -1,8 +1,8 @@
 
-var shoe = require('shoe'); 
+//var shoe = require('shoe'); 
 var rpc = require('rpc-multistream');
+var websocket = require('websocket-stream');
 var auth = require('../../index.js');
-
 
 function log(str) {
     var txt = document.getElementById('debug');
@@ -18,14 +18,17 @@ function pageInit() {
     var bazBtn = document.getElementById('baz-btn');
     var logoutBtn = document.getElementById('logout-btn');
   
-    var server = shoe('/stream');
-    var client = rpc();
+//    var server = shoe('/stream');
+//    var client = rpc();
 
-    client.pipe(server).pipe(client)
+    var stream = websocket('ws://' + window.document.location.host);
+    var client = rpc(null);
+
+    client.pipe(stream).pipe(client)
 
     log("Page loaded");
 
-    client.on('remote', function(remote) {
+    client.on('methods', function(remote) {
         log("Connected to server");
         loginBtn.disabled = false;
         fooBtn.disabled = false;
@@ -52,10 +55,15 @@ function pageInit() {
         });
 
         fooBtn.addEventListener('click', function() {
+            var fooStream = remote.foo();
+            console.log("fooStream", fooStream);
+
+/*
             remote.foo(function(err, msg) {
                 if(err) return log("Error: " + err);
                 log("foo said: " + msg);
             });
+*/
         });
 
         barBtn.addEventListener('click', function() {
