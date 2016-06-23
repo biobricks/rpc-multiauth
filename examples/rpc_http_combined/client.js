@@ -1,6 +1,6 @@
 
-var shoe = require('shoe'); 
 var rpc = require('rpc-multistream');
+var websocket = require('websocket-stream');
 var auth = require('../../index.js');
 
 var req = function() {log("Not logged in");};
@@ -18,10 +18,10 @@ function pageInit() {
     var imageBtn = document.getElementById('image-btn');
     var logoutBtn = document.getElementById('logout-btn');
   
-    var server = shoe('/stream');
+    var stream = websocket('ws://' + window.document.location.host);
     var client = rpc();
 
-    client.pipe(server).pipe(client)
+    client.pipe(stream).pipe(client)
 
     log("Page loaded");
 
@@ -69,8 +69,11 @@ function pageInit() {
         imageBtn.addEventListener('click', function() {
             var img = document.createElement("IMG");
             img.src = "/example.jpg";
-            document.body.appendChild(img);
-            log('img tag appended with src="'+img.src+'"');
+            log("loading image: " + img.src);
+            img.onload = function(e) {
+                document.body.appendChild(img);
+                log("image loaded");
+            }
         });
 
         logoutBtn.addEventListener('click', function() {

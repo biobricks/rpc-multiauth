@@ -302,3 +302,17 @@ req.post({
 });
 ```
 
+# Examples
+
+There are a bunch of complete examples in the `examples/` dir. 
+
+To try an example do s:
+
+```
+cd examples/rpc_simple/
+npm install
+npm run build
+npm start
+```
+
+Then open `http://localhost:3000/` in your browser.

@@ -9,7 +9,6 @@ var ecstatic = require('ecstatic')({
     root: path.join(__dirname)
 });
 
-//var shoe = require('shoe');
 var websocket = require('websocket-stream');
 var rpc = require('rpc-multistream');
 var auth = require('../../index.js');
@@ -49,13 +48,13 @@ websocket.createServer({server: server}, function(stream) {
     }, { // RPC functions
         
         // function with no namespace
-        foo: rpc.syncReadStream(function() {
-            return fs.createReadStream('foo.txt', {encoding: 'utf8'});
-        }),
-/*
-            cb(null, "hi i am foo!");
+        foo: function(msg, cb) {
+            cb(null, 'oh hello! thanks for saying "'+msg+'"');
         },
-*/
+
+        myStream: rpc.syncReadStream(function() {
+            return fs.createReadStream('myfile.txt', {encoding: 'utf8'});
+        }),
         
         // functions in the 'user' namespace
         user: {
@@ -76,7 +75,5 @@ websocket.createServer({server: server}, function(stream) {
 
     rpcServer.pipe(stream).pipe(rpcServer);
 });
-
-//sock.install(server, '/stream');
 
 console.log("Server listening on: http://"+settings.host+":"+settings.port+"/");

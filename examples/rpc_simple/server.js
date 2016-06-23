@@ -8,7 +8,7 @@ var ecstatic = require('ecstatic')({
     root: path.join(__dirname)
 });
 
-var shoe = require('shoe');
+var websocket = require('websocket-stream');
 var rpc = require('rpc-multistream');
 var auth = require('../../index.js');
 
@@ -24,7 +24,7 @@ var settings = {
 
 server.listen(settings.port, settings.host);
 
-var sock = shoe(function(stream) {
+websocket.createServer({server: server}, function(stream) {
 
     var rpcServer = rpc(auth({ 
         secret: settings.secret,
@@ -69,7 +69,5 @@ var sock = shoe(function(stream) {
 
     rpcServer.pipe(stream).pipe(rpcServer);
 });
-
-sock.install(server, '/stream');
 
 console.log("Server listening on: http://"+settings.host+":"+settings.port+"/");

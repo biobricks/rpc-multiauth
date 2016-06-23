@@ -1,7 +1,6 @@
 
-var shoe = require('shoe'); 
 var rpc = require('rpc-multistream');
-
+var websocket = require('websocket-stream');
 
 function log(str) {
     var txt = document.getElementById('debug');
@@ -17,10 +16,10 @@ function pageInit() {
     var bazBtn = document.getElementById('baz-btn');
     var logoutBtn = document.getElementById('logout-btn');
   
-    var server = shoe('/stream');
+    var stream = websocket('ws://' + window.document.location.host);
     var client = rpc();
 
-    client.pipe(server).pipe(client)
+    client.pipe(stream).pipe(client)
 
     log("Page loaded");
 

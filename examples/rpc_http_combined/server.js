@@ -8,7 +8,7 @@ var ecstatic = require('ecstatic')({
     root: path.join(__dirname)
 });
 
-var shoe = require('shoe');
+var websocket = require('websocket-stream');
 var rpc = require('rpc-multistream');
 
 // server static files
@@ -39,7 +39,7 @@ var server = http.createServer(function (req, res) {
     } else if(req.url == '/private') {
         res.setHeader("Content-Type", "text/plain");
 
-        myAuth.verify(req, function(err, tokenData) {
+        myAuth(req, function(err, tokenData) {
             if(err) {
                 res.statusCode = 401;
                 res.end("Unauthorized: " + err);
@@ -61,7 +61,7 @@ var server = http.createServer(function (req, res) {
 
 server.listen(settings.port, settings.host);
 
-var sock = shoe(function(stream) {
+websocket.createServer({server: server}, function(stream) {
 
     var rpcServer = rpc(auth({ 
         secret: settings.secret,
@@ -106,7 +106,5 @@ var sock = shoe(function(stream) {
 
     rpcServer.pipe(stream).pipe(rpcServer);
 });
-
-sock.install(server, '/stream');
 
 console.log("Server listening on: http://"+settings.host+":"+settings.port+"/");

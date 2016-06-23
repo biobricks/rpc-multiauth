@@ -16,11 +16,9 @@ function pageInit() {
     var fooBtn = document.getElementById('foo-btn');
     var barBtn = document.getElementById('bar-btn');
     var bazBtn = document.getElementById('baz-btn');
+    var streamBtn = document.getElementById('stream-btn');
     var logoutBtn = document.getElementById('logout-btn');
   
-//    var server = shoe('/stream');
-//    var client = rpc();
-
     var stream = websocket('ws://' + window.document.location.host);
     var client = rpc(null);
 
@@ -55,16 +53,12 @@ function pageInit() {
         });
 
         fooBtn.addEventListener('click', function() {
-            var fooStream = remote.foo();
-            console.log("fooStream", fooStream);
-
-/*
-            remote.foo(function(err, msg) {
+            remote.foo("hi!", function(err, msg) {
                 if(err) return log("Error: " + err);
                 log("foo said: " + msg);
             });
-*/
         });
+
 
         barBtn.addEventListener('click', function() {
             remote.bar(function(err, msg) {
@@ -77,6 +71,16 @@ function pageInit() {
             remote.baz(function(err, msg) {
                 if(err) return log("Error: " + err);
                 log("baz said: " + msg);
+            });
+        });
+
+        streamBtn.addEventListener('click', function() {
+            var myStream = remote.myStream();
+            myStream.on('data', function(data) {
+                console.log("myStream emitted:", data);
+            });
+            myStream.on('end', function() {
+                console.log("myStream ended");
             });
         });
 
