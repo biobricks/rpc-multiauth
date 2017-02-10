@@ -366,7 +366,7 @@ function authRPC(opts, procs, hookOrNamespace) {
                 } else {
                     return method.apply(this, arguments);
                 }
-            }            
+            }
         };
 
         // Propagate synchronous function tag.
