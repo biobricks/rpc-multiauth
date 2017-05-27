@@ -520,7 +520,7 @@ if(isNode) { // server side
             // if this is called with an rpc object that supports logouts
             if(typeof opts == 'object' && typeof opts.logout == 'function') {
                 remote = opts;
-                rpcMultiAuth.delToken(opts);
+                rpcMultiAuth.delToken();
                 remote.logout(callback);
             } else {
                 return rpcMultiAuth.delToken(opts);
