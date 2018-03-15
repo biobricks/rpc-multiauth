@@ -1,6 +1,6 @@
 {
   "name": "rpc-multiauth",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "dependencies": {
     "clone": "^1.0.2",
     "cookie": "^0.2.3",
