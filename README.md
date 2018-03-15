@@ -12,7 +12,7 @@ rpc-multiauth works especially well with the npm modules [routes](https://www.np
 ## Server side
 
 ```
-var auth = require('rpc-multiauth');
+var auth = require('rpc-multiauth').server;
 
 var rpcServer = rpc(auth(
   { // the following options _must_ be set
@@ -61,7 +61,7 @@ Note: Currently there is no real error reporting when auth fails for a sync func
 Simlpe usage:
 
 ```
-var auth = require('rpc-multiauth');
+var auth = require('rpc-multiauth').client;
 
 function rpcConnected(remote) {
 
@@ -89,7 +89,7 @@ function rpcConnected(remote) {
 With opts:
 
 ```
-var auth = require('rpc-multiauth');
+var auth = require('rpc-multiauth').client;
 
 function rpcConnected(remote) {
 
@@ -136,7 +136,7 @@ See examples/ for more info.
 Basic usage:
 
 ```
-var myAuth = auth(settings.secret);
+var myAuth = auth(settings.secret).server;
 
 http.createServer(function(req, res) {
 
@@ -287,7 +287,7 @@ in case you want to explicitly define a per-request token.
 Example usage: 
 
 ```
-var auth = require('rpc-multiauth');
+var auth = require('rpc-multiauth').client;
 
 var req = auth.requester({json: true});
 

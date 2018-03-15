@@ -408,9 +408,8 @@ function authRPC(opts, procs, hookOrNamespace) {
 
 var rpcMultiAuth;
 
-if(isNode) { // server side
 
-    module.exports = rpcMultiAuth = function() {
+var serverExport = rpcMultiAuth = function() {
 
         // Being initialized for RPC auth
         if(typeof arguments[0] == 'object' && typeof arguments[1] == 'object') {
@@ -440,12 +439,12 @@ if(isNode) { // server side
         }
     };
 
-} else { // client side
+
 
     var store = require('store'); // LocalStorage wrapper
     var xhr = require('xhr'); // XMLHttpRequest wrapper
     
-    module.exports = rpcMultiAuth = {
+var clientExport = rpcMultiAuth = {
 
         // save token using cookie if opts.setCookie is true (default false)
         // and save in LocalStorage if opts.useLocalStorage is true (default true)
@@ -684,4 +683,15 @@ if(isNode) { // server side
     };
 
     rpcMultiAuth.xhr = xhr;
+
+
+// For backwards compatibility with older versions of rpc-multiauth
+if(isNode) { // server side
+  serverExport.server = serverExport;
+  serverExport.client = clientExport;
+  module.exports = serverExport;
+} else { // client side
+  clientExport.server = serverExport;
+  clientExport.client = clientExport;
+  module.exports = clientExport;
 }
