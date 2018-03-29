@@ -127,7 +127,7 @@ function authHTTP(opts) {
             userData = null;
         }
         if(!uniqueID || !(typeof uniqueID == 'string' || typeof uniqueID == 'number')) {
-            return callback("Missing or invalid ID");
+            return callback(new Error("Missing or invalid ID"));
         }   
            
         var token = createToken(uniqueID, opts.secret, userData, {
@@ -577,7 +577,7 @@ var clientExport = rpcMultiAuth = {
                 
             var token = rpcMultiAuth.getToken(opts);
             if(!token) {
-                return callback('No token available so could not authenticate. Either explicitly pass a token in the opts argument like so: {token: "my_token"} or ensure that you have a token saved using cookies or LocalAuth using the cookie name / localstorage key "'+opts.tokenName+'".');
+                return callback(new Error('No token available so could not authenticate. Either explicitly pass a token in the opts argument like so: {token: "my_token"} or ensure that you have a token saved using cookies or LocalAuth using the cookie name / localstorage key "'+opts.tokenName+'".'));
             }
 
             if(typeof remote == 'string') {
@@ -594,8 +594,8 @@ var clientExport = rpcMultiAuth = {
                         if(err || resp.statusCode < 200 || resp.statusCode >= 300) {
                             return callback(err || body);
                         }
-                    if(!body) return callback("Got empty response from server but no http error status code.");
-                    if(typeof body != 'string') return callback("Got non-string response from server. Expected userData.");
+                    if(!body) return callback(new Error("Got empty response from server but no http error status code."));
+                    if(typeof body != 'string') return callback(new Error("Got non-string response from server. Expected userData."));
                     callback(null, body);
                 });
             } else {
@@ -631,8 +631,8 @@ var clientExport = rpcMultiAuth = {
                         if(err || resp.statusCode < 200 || resp.statusCode >= 300) {
                             return callback(err || token);
                         }
-                        if(!token) return callback("Got empty response from server but no http error status code.");
-                        if(typeof token != 'string') return callback("Got non-string response from server. Expected token.");
+                        if(!token) return callback(new Error("Got empty response from server but no http error status code."));
+                        if(typeof token != 'string') return callback(new Error("Got non-string response from server. Expected token."));
                         
                         rpcMultiAuth.saveToken(token, opts);
                         
