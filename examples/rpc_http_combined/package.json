@@ -2,7 +2,7 @@
   "name": "rpc-multiauth-example-rpc_http_combined",
   "version": "0.0.0",
   "dependencies": {
-    "ecstatic": "^1.1.3",
+    "ecstatic": "^4.1.2",
     "rpc-multistream": "0.0.1",
     "websocket-stream": "^3.2.1"
   },
